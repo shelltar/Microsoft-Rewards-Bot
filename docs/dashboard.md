@@ -12,3 +12,6 @@ Shows live status and logs in a simple web page.
 ```bash
 npm run dashboard
 ```
+
+---
+**[← Back to Documentation](index.md)**

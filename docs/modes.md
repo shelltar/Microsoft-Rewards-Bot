@@ -14,3 +14,6 @@ Lists the main modes and when to pick them.
 ```bash
 npm run dashboard
 ```
+
+---
+**[← Back to Documentation](index.md)**

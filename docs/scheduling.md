@@ -17,3 +17,6 @@ Runs the bot automatically at set times.
   }
 }
 ```
+
+---
+**[← Back to Documentation](index.md)**

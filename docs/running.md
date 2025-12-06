@@ -14,3 +14,6 @@ Explains the basic commands to start the bot.
 ```bash
 npm start
 ```
+
+---
+**[← Back to Documentation](index.md)**

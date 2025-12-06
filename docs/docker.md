@@ -12,3 +12,6 @@ Runs the bot in a container with bundled scheduling and browser setup.
 ```bash
 npm run docker:compose
 ```
+
+---
+**[← Back to Documentation](index.md)**

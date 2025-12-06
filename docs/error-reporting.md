@@ -14,3 +14,6 @@ curl -X POST https://your-deployment.vercel.app/api/report-error \
   -H "Content-Type: application/json" \
   -d '{"error":"Search job failed","type":"search","metadata":{"account":"user@contoso.com"}}'
 ```
+
+---
+**[← Back to Documentation](index.md)**

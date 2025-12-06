@@ -38,4 +38,4 @@ Automates Microsoft Rewards tasks so you collect points with minimal setup.
 - Use account creation mode only if you accept this risk.
 
 ## Documentation
-Short guides live in `docs/index.md`.
+Explore the **[full documentation](docs/index.md)** for detailed guides on setup, running modes, scheduling, and troubleshooting.

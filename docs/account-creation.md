@@ -12,3 +12,6 @@ Creates new Microsoft accounts and prepares them for Rewards.
 ```bash
 npm run creator -- -y backup@example.com
 ```
+
+---
+**[← Back to Documentation](index.md)**

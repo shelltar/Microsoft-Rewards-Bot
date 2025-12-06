@@ -21,3 +21,6 @@ Controls how the bot behaves through `src/config.jsonc`.
   "scheduling": { "enabled": false }
 }
 ```
+
+---
+**[← Back to Documentation](index.md)**

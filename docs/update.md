@@ -12,3 +12,6 @@ Keeps the bot current with the official release.
 ```bash
 npm run update
 ```
+
+---
+**[← Back to Documentation](index.md)**

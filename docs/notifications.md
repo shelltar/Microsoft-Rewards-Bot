@@ -13,3 +13,6 @@ Sends run summaries and issues to your preferred webhook.
 set DISCORD_WEBHOOK_URL=https://discord.com/api/webhooks/... 
 npm start
 ```
+
+---
+**[← Back to Documentation](index.md)**
