@@ -5,7 +5,6 @@
 </p>
 
 <p align="center">
-	<a href="https://github.com/LightZirconite/Microsoft-Rewards-Bot/releases"><img src="https://img.shields.io/badge/version-3.5.0-blue?style=flat-square" alt="Version 3.5.0" /></a>
 	<a href="https://nodejs.org/"><img src="https://img.shields.io/badge/node-≥20-brightgreen?style=flat-square&logo=nodedotjs" alt="Node.js 20+" /></a>
 	<a href="https://www.typescriptlang.org/"><img src="https://img.shields.io/badge/TypeScript-strict-3178c6?style=flat-square&logo=typescript" alt="TypeScript" /></a>
 	<a href="https://discord.gg/k5uHkx9mne"><img src="https://img.shields.io/badge/Discord-Join-5865F2?style=flat-square&logo=discord&logoColor=white" alt="Discord" /></a>
@@ -13,8 +12,8 @@
 </p>
 
 <p align="center">
-	<b>v3.5 Remaster</b> — The most advanced Microsoft Rewards automation tool.<br />
-	Human-like behavior · Anti-detection · Multi-account · Dashboard · Scheduling
+	Advanced Microsoft Rewards automation with human-like behavior.<br />
+	Anti-detection · Multi-account · Dashboard · Scheduling
 </p>
 
 ---
@@ -69,47 +68,31 @@ npm start
 
 ---
 
-## 🔥 Why Choose This Bot?
+## 🔥 Why Choose This Fork?
 
-This fork is the **most feature-complete and actively maintained** Microsoft Rewards automation tool. Here's how we compare to the original [TheNetsky/Microsoft-Rewards-Script](https://github.com/TheNetsky/Microsoft-Rewards-Script):
+This is an enhanced fork of [TheNetsky/Microsoft-Rewards-Script](https://github.com/TheNetsky/Microsoft-Rewards-Script) with additional features:
 
-| Feature | **This Bot (v3.5 Remaster)** | Original Script |
-|---------|:----------------------------:|:---------------:|
-| **Anti-Detection System** | ✅ Advanced (fingerprints, humanization, gestures) | ⚠️ Basic |
-| **Query Diversity Engine** | ✅ Multi-source (Google Trends, Reddit, News) | ❌ Google Trends only |
-| **Web Dashboard** | ✅ Real-time monitoring | ❌ None |
-| **Built-in Scheduler** | ✅ Internal scheduler with jitter | ❌ External cron only |
-| **Account Creator** | ✅ Full automation wizard | ❌ None |
-| **Job State Management** | ✅ Resume-on-crash, skip completed | ❌ None |
-| **Error Reporting** | ✅ Automatic (helps improve project) | ❌ None |
-| **Vacation Mode** | ✅ Natural usage patterns | ❌ None |
-| **Risk Management** | ✅ Adaptive delays, ban prediction | ❌ None |
-| **Documentation** | ✅ Comprehensive guides | ⚠️ Minimal (TODO) |
-| **NTFY Push Notifications** | ✅ Supported | ❌ None |
-| **Semantic Deduplication** | ✅ Smart query filtering | ❌ Basic dedup |
-| **Human Typing Simulation** | ✅ Variable speed, typos | ⚠️ Fixed delay |
-| **Compromised Mode Recovery** | ✅ Auto-handles security prompts | ❌ None |
-| **Multi-Pass Runs** | ✅ Configurable passes per run | ❌ Single pass |
+| Feature | This Fork | Original |
+|---------|:---------:|:--------:|
+| **Web Dashboard** | ✅ Real-time monitoring UI | ❌ |
+| **Built-in Scheduler** | ✅ Internal with jitter | ❌ External cron only |
+| **Account Creator** | ✅ Automated registration | ❌ |
+| **Job State** | ✅ Resume-on-crash | ❌ |
+| **Error Reporting** | ✅ Auto community reports | ❌ |
+| **Vacation Mode** | ✅ Random off-days | ❌ |
+| **Risk Management** | ✅ Adaptive throttling | ❌ |
+| **Compromised Recovery** | ✅ Security prompt handling | ❌ |
+| **Multi-Pass Runs** | ✅ Configurable | ❌ |
+| **Query Sources** | Google Trends, Reddit, News | Google Trends |
+| **Documentation** | ✅ Comprehensive | ⚠️ TODO |
 
-### Why the Remaster?
+Both projects share: Discord/NTFY webhooks, fingerprinting, Docker support, multi-account, Daily Set/Promotions/Searches.
 
-The original script served as a solid foundation, but lacked the sophisticated anti-detection measures required for long-term reliability. This remaster addresses:
-
-1. **Detection Risk** — Microsoft actively monitors for bot behavior. Our advanced humanization (random delays, mouse gestures, scroll patterns) significantly reduces ban risk.
-
-2. **Reliability** — Job state management means crashed runs resume where they left off. No more re-running completed accounts.
-
-3. **Usability** — Web dashboard, comprehensive documentation, and built-in scheduling make this accessible to everyone—not just developers.
-
-4. **Maintenance** — Active development with regular updates, bug fixes, and community support via Discord.
-
-### Migration from Original Script
-
-Already using TheNetsky's script? Migration is simple:
+### Migration
 
 ```bash
-# Your accounts.jsonc format is compatible!
-# Just copy your accounts file to src/accounts.jsonc
+# accounts.jsonc format is compatible
+cp your-old-accounts.jsonc src/accounts.jsonc
 ```
 
 ---
@@ -123,5 +106,5 @@ Already using TheNetsky's script? Migration is simple:
 <p align="center">
 	<a href="https://discord.gg/k5uHkx9mne">Discord</a> · 
 	<a href="docs/index.md">Documentation</a> · 
-	<a href="https://github.com/LightZirconite/Microsoft-Rewards-Bot/issues">Report Bug</a>
+	<a href="https://discord.gg/k5uHkx9mne">Report Bug</a>
 </p>
