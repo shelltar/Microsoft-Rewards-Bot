@@ -228,9 +228,6 @@ export class Login {
 
             await this.disableFido(page)
 
-            // CRITICAL: Start automatic Escape sender to dismiss native OS dialogs
-            this.passkeyHandler.startEscapeWatcher(page)
-
             const [reloadResult, totpResult, portalCheck] = await Promise.allSettled([
                 this.bot.browser.utils.reloadBadPage(page),
                 this.totpHandler.tryAutoTotp(page, 'initial landing'),
@@ -262,12 +259,8 @@ export class Login {
             this.bot.log(this.bot.isMobile, 'LOGIN', 'Login complete')
             this.totpHandler.setTotpSecret(undefined)
 
-            // CRITICAL: Keep Escape watcher running for 10 more seconds
-            // Bluetooth/Windows Hello dialogs appear AFTER login completion
-            this.bot.log(this.bot.isMobile, 'LOGIN-ESCAPE', 'Keeping Escape watcher active for 10s (dialogs may appear after login)', 'log', 'cyan')
-            setTimeout(() => {
-                this.passkeyHandler.stopEscapeWatcher()
-            }, 10000)
+            this.bot.log(this.bot.isMobile, 'LOGIN', 'Login complete')
+            this.totpHandler.setTotpSecret(undefined)
         } catch (e) {
             const errorMessage = e instanceof Error ? e.message : String(e)
             const stackTrace = e instanceof Error ? e.stack : undefined

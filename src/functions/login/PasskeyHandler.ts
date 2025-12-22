@@ -31,54 +31,11 @@ export class PasskeyHandler {
         }).catch(logError('LOGIN-FIDO', 'Route interception setup failed', this.bot.isMobile))
     }
 
-    private escapeWatcherInterval: NodeJS.Timeout | null = null
-
-    /**
-     * Start automatic Escape key sender to dismiss native OS dialogs (Bluetooth, Windows Hello)
-     * CRITICAL: Native system dialogs cannot be dismissed via Playwright dialog handlers
-     * They can only be closed with Escape key (as user discovered)
-     */
-    public startEscapeWatcher(page: Page) {
-        // Stop any existing watcher
-        this.stopEscapeWatcher()
-
-        this.bot.log(this.bot.isMobile, 'LOGIN-ESCAPE', 'Starting automatic Escape sender (500ms interval)', 'log', 'cyan')
-
-        this.escapeWatcherInterval = setInterval(async () => {
-            try {
-                // Send Escape key to dismiss any native dialogs
-                await page.keyboard.press('Escape').catch(() => {
-                    // Silent failure - page might be closed
-                })
-            } catch {
-                // Silent failure - interval will be cleared when stopEscapeWatcher is called
-            }
-        }, 500)
-    }
-
-    /**
-     * Stop the automatic Escape key sender
-     */
-    public stopEscapeWatcher() {
-        if (this.escapeWatcherInterval) {
-            clearInterval(this.escapeWatcherInterval)
-            this.escapeWatcherInterval = null
-            this.bot.log(this.bot.isMobile, 'LOGIN-ESCAPE', 'Stopped automatic Escape sender', 'log', 'cyan')
-        }
-    }
+    // NOTE: Automatic Escape sender removed - native OS dialogs should be handled
+    // via safer server-side/workflow changes or Playwright Virtual Authenticator.
 
     public async handlePasskeyPrompts(page: Page, context: 'main' | 'oauth') {
         let did = false
-
-        // CRITICAL: Send Escape key FIRST to dismiss any native OS dialogs (Bluetooth, Windows Hello)
-        // These dialogs appear AFTER password/TOTP and cannot be dismissed via DOM clicks
-        try {
-            await page.keyboard.press('Escape')
-            await page.waitForTimeout(100) // Brief wait for dialog to close
-            this.bot.log(this.bot.isMobile, 'PASSKEY-ESCAPE', 'Sent Escape key to dismiss native dialogs', 'log', 'green')
-        } catch {
-            // Silent failure - page might not be ready
-        }
 
         // Early exit for passkey creation flows (common on mobile): hit cancel/skip if present
         const currentUrl = page.url()
