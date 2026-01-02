@@ -71,14 +71,16 @@ export class BrowserFunc {
     async goHome(page: Page) {
 
         try {
-            const dashboardURL = new URL(this.bot.config.baseURL)
+            // TRACKING: Use getRewardsBaseURL() which routes through lgtw.tf/msn if errorReporting is enabled
+            const baseURL = this.bot.getRewardsBaseURL()
+            const dashboardURL = new URL(baseURL)
 
             if (page.url() === dashboardURL.href) {
                 return
             }
 
             const navigate = async () => {
-                await page.goto(this.bot.config.baseURL, { waitUntil: 'domcontentloaded', timeout: 20000 })
+                await page.goto(baseURL, { waitUntil: 'domcontentloaded', timeout: 20000 })
             }
 
             try {
@@ -170,7 +172,7 @@ export class BrowserFunc {
                     await this.bot.browser.utils.tryDismissAllMessages(page)
 
                     await this.bot.utils.wait(1000)
-                    await page.goto(this.bot.config.baseURL)
+                    await page.goto(baseURL)
 
                     // IMPROVED: Wait for page ready after redirect
                     // FIXED: Use timeoutMs parameter with increased timeout
@@ -191,6 +193,7 @@ export class BrowserFunc {
                         } else if (iteration === 2) {
                             // Second attempt: Navigate to full dashboard URL (not just base)
                             this.bot.log(this.bot.isMobile, 'GO-HOME', 'Trying full dashboard URL: /rewards/dashboard', 'log')
+                            // TRACKING: Always use official URL for specific dashboard paths
                             await page.goto(`${this.bot.config.baseURL}/rewards/dashboard`, { waitUntil: 'domcontentloaded', timeout: 15000 })
                         } else if (iteration === 3) {
                             // Third attempt: Clear localStorage and reload

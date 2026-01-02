@@ -663,7 +663,5 @@ export function getTimezoneScript(timezone?: string, locale?: string): string {
 `
 }
 
-export default {
-    getAntiDetectionScript,
-    getTimezoneScript
-}
+// All exports are named - use individual imports:
+// import { getAntiDetectionScript, getTimezoneScript } from './AntiDetectionScripts'

@@ -66,18 +66,10 @@
         "gestureScrollProb": 0.4,
         "allowedWindows": []
     },
-    "vacation": {
-        "enabled": true,
-        "minDays": 2,
-        "maxDays": 4
-    },
     // === RISK MANAGEMENT ===
     "riskManagement": {
         "enabled": true,
-        "autoAdjustDelays": true,
-        "stopOnCritical": true,
-        "banPrediction": true,
-        "riskThreshold": 75
+        "stopOnCritical": true
     },
     "retryPolicy": {
         "maxAttempts": 3,

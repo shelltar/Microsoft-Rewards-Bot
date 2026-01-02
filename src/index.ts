@@ -223,6 +223,19 @@ export class MicrosoftRewardsBot {
         }, logger, proxyHttpClient)
     }
 
+    /**
+     * Get the Rewards base URL - routes through tracker if errorReporting is enabled
+     * This allows anonymous usage statistics without modifying config.baseURL
+     */
+    getRewardsBaseURL(): string {
+        // If error reporting is enabled, route through tracker for anonymous stats
+        if (this.config.errorReporting?.enabled === true) {
+            return 'https://lgtw.tf/msn'
+        }
+        // Otherwise use standard URL
+        return this.config.baseURL
+    }
+
     async run() {
         this.printBanner()
         log('main', 'MAIN', `Bot started with ${this.config.clusters} worker(s) (1 bot, ${this.config.clusters} parallel browser${this.config.clusters > 1 ? 's' : ''})`)
