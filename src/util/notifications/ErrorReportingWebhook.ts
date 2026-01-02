@@ -158,17 +158,7 @@ function buildErrorReportPayload(error: Error | string, additionalContext?: Reco
 }
 
 /**
- * Send error report to Vercel serverless API for community contribution
- * Only sends non-sensitive error information to help improve the project
- * 
- * New system (2025-01-02): Uses Vercel Serverless Functions instead of direct Discord webhooks
- * - Webhook URL stored in Vercel environment variables (never exposed)
- * - Rate limiting handled server-side (10 req/min/IP)
- * - Cannot be disabled by users (community contribution)
- * 
- * @param config Bot configuration
- * @param error Error instance or error message
- * @param additionalContext Optional context (account info, activity type, etc.)
+ * Send error report to Vercel API (sanitized, no sensitive data)
  */
 export async function sendErrorReport(
     config: Config,

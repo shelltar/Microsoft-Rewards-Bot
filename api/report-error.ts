@@ -2,15 +2,8 @@ import type { VercelRequest, VercelResponse } from '@vercel/node'
 
 /**
  * Vercel Serverless Function for Error Reporting
- * 
- * This endpoint receives error reports from Microsoft Rewards Bot instances
- * and forwards them to a centralized Discord webhook stored in environment variables.
- * 
- * Environment Variables Required:
- * - DISCORD_ERROR_WEBHOOK_URL: Discord webhook URL for error reporting
- * - RATE_LIMIT_SECRET (optional): Secret key for bypassing rate limits (trusted clients)
- * 
- * @see https://vercel.com/docs/functions/serverless-functions
+ * Receives error reports and forwards to Discord webhook
+ * Rate limited: 10 req/min/IP
  */
 
 interface ErrorReportPayload {
