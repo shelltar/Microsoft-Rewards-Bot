@@ -142,7 +142,7 @@ function initPointsChart() {
             labels: generateDateLabels(7),
             datasets: [{
                 label: 'Points',
-                data: generatePlaceholderData(7),
+                data: new Array(7).fill(0), // Real data loaded from API
                 borderColor: '#58a6ff',
                 backgroundColor: gradient,
                 borderWidth: 2,
@@ -203,16 +203,6 @@ function generateDateLabels(days) {
     return labels
 }
 
-function generatePlaceholderData(count) {
-    const data = []
-    let base = 150
-    for (let i = 0; i < count; i++) {
-        base += Math.floor(Math.random() * 50) - 20
-        data.push(Math.max(50, base))
-    }
-    return data
-}
-
 function setChartPeriod(period, btn) {
     document.querySelectorAll('.period-btn').forEach((b) => { b.classList.remove('active') })
     btn.classList.add('active')
@@ -220,9 +210,56 @@ function setChartPeriod(period, btn) {
     const days = period === '7d' ? 7 : 30
     if (pointsChart) {
         pointsChart.data.labels = generateDateLabels(days)
-        pointsChart.data.datasets[0].data = generatePlaceholderData(days)
-        pointsChart.update('none')
+
+        // Fetch actual data from account history
+        fetch('/api/account-history')
+            .then(r => r.json())
+            .then(history => {
+                const pointsData = extractPointsFromHistory(history, days)
+                pointsChart.data.datasets[0].data = pointsData
+                pointsChart.update('none')
+            })
+            .catch(() => {
+                // Fallback to zeros if API fails
+                pointsChart.data.datasets[0].data = new Array(days).fill(0)
+                pointsChart.update('none')
+            })
     }
+}
+
+function extractPointsFromHistory(history, days) {
+    const dataByDate = {}
+    const today = new Date()
+
+    // Initialize all days with 0
+    for (let i = 0; i < days; i++) {
+        const d = new Date(today)
+        d.setDate(d.getDate() - i)
+        const key = d.toISOString().slice(0, 10)
+        dataByDate[key] = 0
+    }
+
+    // Fill with actual data
+    for (const email in history) {
+        const accountHistory = history[email]
+        for (const day in accountHistory) {
+            if (dataByDate.hasOwnProperty(day)) {
+                const dayData = accountHistory[day]
+                dataByDate[day] += dayData.pointsEarnedToday || 0
+            }
+        }
+    }
+
+    // Convert to array (reverse chronological)
+    const result = []
+    for (let i = days - 1; i >= 0; i--) {
+        const d = new Date(today)
+        d.setDate(d.getDate() - i)
+        const key = d.toISOString().slice(0, 10)
+        result.push(dataByDate[key] || 0)
+    }
+
+    return result
 }
 
 // Data Loading
@@ -298,7 +335,7 @@ function updateChartsWithRealData(histories) {
         var data = sortedDates.map((d) => { return last7Days[d] })
 
         pointsChart.data.labels = labels.length > 0 ? labels : generateDateLabels(7)
-        pointsChart.data.datasets[0].data = data.length > 0 ? data : generatePlaceholderData(7)
+        pointsChart.data.datasets[0].data = data.length > 0 ? data : new Array(7).fill(0)
         pointsChart.update()
     }
 
@@ -675,11 +712,95 @@ function exportLogs() {
 }
 
 function openConfig() {
-    showToast('Config editor coming soon', 'info')
+    showModal('Configuration Editor', `
+        <div class="config-loading">Loading configuration...</div>
+    `, [])
+
+    // Fetch current config
+    fetch('/api/config')
+        .then(r => r.json())
+        .then(config => {
+            const body = `
+                <div class="config-editor">
+                    <textarea id="configEditor" class="config-textarea">${JSON.stringify(config, null, 2)}</textarea>
+                    <p class="config-hint">⚠️ Advanced users only. Invalid JSON will break the bot.</p>
+                </div>
+            `
+            const buttons = [
+                { cls: 'btn btn-sm btn-secondary', action: 'closeModal()', text: 'Cancel' },
+                { cls: 'btn btn-sm btn-primary', action: 'saveConfig()', text: 'Save Changes' }
+            ]
+            showModal('Configuration Editor', body, buttons)
+        })
+        .catch(e => {
+            showToast('Failed to load config: ' + e.message, 'error')
+            closeModal()
+        })
+}
+
+function saveConfig() {
+    const editor = document.getElementById('configEditor')
+    if (!editor) return
+
+    try {
+        const newConfig = JSON.parse(editor.value)
+
+        fetch('/api/config', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(newConfig)
+        })
+            .then(r => r.json())
+            .then(data => {
+                if (data.success) {
+                    showToast('Configuration saved! Restart bot for changes to apply.', 'success')
+                    closeModal()
+                } else {
+                    showToast('Save failed: ' + (data.error || 'Unknown error'), 'error')
+                }
+            })
+            .catch(e => {
+                showToast('Save failed: ' + e.message, 'error')
+            })
+    } catch (e) {
+        showToast('Invalid JSON format: ' + e.message, 'error')
+    }
 }
 
 function viewHistory() {
-    showToast('History viewer coming soon', 'info')
+    showModal('Run History', '<div class="config-loading">Loading history...</div>', [])
+
+    fetch('/api/history')
+        .then(r => r.json())
+        .then(history => {
+            if (!history || history.length === 0) {
+                showModal('Run History', '<p class="log-empty">No history available yet</p>', [
+                    { cls: 'btn btn-sm btn-secondary', action: 'closeModal()', text: 'Close' }
+                ])
+                return
+            }
+
+            const rows = history.slice(0, 10).map(h => `
+                <div class="history-row">
+                    <div class="history-date">${new Date(h.timestamp || Date.now()).toLocaleString()}</div>
+                    <div class="history-stats">
+                        <span>✅ ${h.successCount || 0} success</span>
+                        <span>❌ ${h.errorCount || 0} errors</span>
+                        <span>🎯 ${h.totalPoints || 0} pts</span>
+                    </div>
+                </div>
+            `).join('')
+
+            const body = `<div class="history-list">${rows}</div>`
+            const buttons = [
+                { cls: 'btn btn-sm btn-secondary', action: 'closeModal()', text: 'Close' }
+            ]
+            showModal('Run History (Last 10 Runs)', body, buttons)
+        })
+        .catch(e => {
+            showToast('Failed to load history: ' + e.message, 'error')
+            closeModal()
+        })
 }
 
 // UI Utilities
