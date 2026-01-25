@@ -6,6 +6,8 @@ import { MicrosoftRewardsBot } from '../index'
 import { AccountProxy } from '../interface/Account'
 import { updateFingerprintUserAgent } from '../util/browser/UserAgent'
 import { getAntiDetectionScript, getTimezoneScript } from '../util/security/AntiDetectionScripts'
+import { setupTLSProtection, getRandomizedHTTP2Settings } from '../util/security/TLSFingerprint'
+import { generateRealisticViewport, generateRealisticScreen, getViewportOverrideScript } from '../util/security/ViewportRandomizer'
 import { loadSessionData, saveFingerprintData } from '../util/state/Load'
 import { logFingerprintValidation, validateFingerprintConsistency } from '../util/validation/FingerprintValidator'
 
@@ -95,7 +97,9 @@ export class Browser {
                 '--no-default-browser-check',
                 '--no-zygote',
                 // ANTI-DETECTION: Make WebDriver undetectable
-                '--enable-features=NetworkService,NetworkServiceInProcess'
+                '--enable-features=NetworkService,NetworkServiceInProcess',
+                // NEW 2026: TLS fingerprinting protection
+                ...getRandomizedHTTP2Settings()
             ]
 
             // Platform-specific stability fixes
@@ -186,6 +190,18 @@ export class Browser {
                     await page.addInitScript(antiDetectScript)
                     await page.addInitScript(timezoneScript)
 
+                    // NEW 2026: Enhanced viewport randomization
+                    const viewportConfig = generateRealisticViewport(this.bot.isMobile, true)
+                    const screenConfig = generateRealisticScreen(viewportConfig)
+                    const viewportScript = getViewportOverrideScript(viewportConfig, screenConfig)
+                    await page.addInitScript(viewportScript)
+                    await page.setViewportSize({
+                        width: viewportConfig.width,
+                        height: viewportConfig.height
+                    })
+
+                    this.bot.log(this.bot.isMobile, 'BROWSER', `Viewport: ${viewportConfig.width}x${viewportConfig.height} (DPR: ${viewportConfig.deviceScaleFactor})`)
+
                     // CRITICAL: Block WebAuthn API calls to prevent passkey dialogs
                     await page.addInitScript(() => {
                         // Override navigator.credentials to block passkey requests
@@ -198,6 +214,21 @@ export class Browser {
                             }
 
                             // Block credential retrieval (passkey authentication)
+                            window.navigator.credentials.get = async function (...args: any[]) {
+                                console.log('[MRS] Blocked WebAuthn credential.get() call')
+                                // Reject with NotAllowedError (user cancelled)
+                                throw new DOMException('The operation either timed out or was not allowed.', 'NotAllowedError')
+                            }
+                        }
+
+                        // Also remove PublicKeyCredential if it exists
+                        if (window.PublicKeyCredential) {
+                            // @ts-ignore - Override isUserVerifyingPlatformAuthenticatorAvailable
+                            window.PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable = async () => false
+                            // @ts-ignore - Override isConditionalMediationAvailable  
+                            window.PublicKeyCredential.isConditionalMediationAvailable = async () => false
+                        }
+                    })
                             window.navigator.credentials.get = async function (...args: any[]) {
                                 console.log('[MRS] Blocked WebAuthn credential.get() call')
                                 // Reject with NotAllowedError (user cancelled)
@@ -240,22 +271,10 @@ export class Browser {
                         this.bot.log(this.bot.isMobile, 'BROWSER', `WebAuthn setup skipped: ${cdpError instanceof Error ? cdpError.message : String(cdpError)}`, 'warn')
                     }
 
-                    // IMPROVED: Use crypto-secure random for viewport sizes
-                    const { secureRandomInt } = await import('../util/security/SecureRandom')
-
-                    const viewport = this.bot.isMobile
-                        ? {
-                            // Mobile: Vary between common phone screen sizes
-                            width: secureRandomInt(360, 420),
-                            height: secureRandomInt(640, 896)
-                        }
-                        : {
-                            // Desktop: Vary between common desktop resolutions
-                            width: secureRandomInt(1280, 1920),
-                            height: secureRandomInt(720, 1080)
-                        }
-
-                    await page.setViewportSize(viewport)
+                    // NEW 2026: Setup TLS fingerprinting protection
+                    // This applies enhanced HTTP headers and request timing
+                    const userAgent = fingerprint.fingerprint.navigator.userAgent
+                    await setupTLSProtection(page.context(), userAgent, this.bot.isMobile)
 
                     // Add custom CSS for page fitting
                     await page.addInitScript(() => {
@@ -272,7 +291,7 @@ export class Browser {
                         } catch { /* Non-critical: Style injection may fail if DOM not ready */ }
                     })
 
-                    this.bot.log(this.bot.isMobile, 'BROWSER', `Page configured with 23-layer anti-detection (viewport: ${viewport.width}x${viewport.height})`)
+                    this.bot.log(this.bot.isMobile, 'BROWSER', `Page configured with 23-layer anti-detection + TLS/HTTP2 protection`)
                 } catch (e) {
                     this.bot.log(this.bot.isMobile, 'BROWSER', `Page setup warning: ${e instanceof Error ? e.message : String(e)}`, 'warn')
                 }
