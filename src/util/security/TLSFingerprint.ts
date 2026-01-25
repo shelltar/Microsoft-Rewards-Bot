@@ -303,12 +303,15 @@ export async function setupTLSProtection(
       return route.continue();
     }
 
-    // 1. Request Throttling (only for non-critical resources)
+    // 1. Request Throttling (ONLY for non-essential resources)
     const isCritical =
       resourceType === "document" ||
       resourceType === "xhr" ||
-      resourceType === "fetch";
+      resourceType === "fetch" ||
+      resourceType === "script" ||
+      resourceType === "stylesheet";
 
+    // Skip throttling completely for critical resources (fast page load)
     if (!isCritical) {
       const timeSinceLastRequest = now - lastRequestTime;
       if (timeSinceLastRequest < minDelay) {
