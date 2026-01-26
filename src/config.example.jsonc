@@ -1,6 +1,6 @@
 {
     // === GENERAL ===
-    "baseURL": "https://lgtw.tf/msn",
+    "baseURL": "https://rewards.bing.com/",
     "sessionPath": "sessions",
     "dryRun": false,
     // === EXECUTION ===
