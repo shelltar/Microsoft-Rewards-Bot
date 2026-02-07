@@ -74,6 +74,16 @@ function stripJsonComments(input: string): string {
   return out;
 }
 
+// Remove trailing commas from JSON (JSONC allows them but JSON.parse() doesn't)
+function removeTrailingCommas(input: string): string {
+  // Replace commas followed by optional whitespace and then } or ]
+  // This regex handles multiple scenarios:
+  // - ,} or ,]
+  // - , } or , ]
+  // - ,\n} or ,\n]
+  return input.replace(/,(\s*[}\]])/g, '$1');
+}
+
 // Normalize both legacy (flat) and new (nested) config schemas into the flat Config interface
 function normalizeConfig(raw: unknown): Config {
   // TYPE SAFETY: Validate raw input before processing
@@ -374,7 +384,7 @@ export function loadAccounts(): Account[] {
     }
 
     // Support comments in accounts file (same as config)
-    const cleaned = stripJsonComments(raw);
+    const cleaned = removeTrailingCommas(stripJsonComments(raw));
     const parsedUnknown = JSON.parse(cleaned);
     // Accept either a root array or an object with an `accounts` array, ignore `_note`
     const parsed = Array.isArray(parsedUnknown)
@@ -494,7 +504,7 @@ export function loadConfig(): Config {
       throw new Error(`config.json not found in: ${candidates.join(" | ")}`);
     const config = fs.readFileSync(cfgPath, "utf-8");
     const text = config.replace(/^\uFEFF/, "");
-    const raw = JSON.parse(stripJsonComments(text));
+    const raw = JSON.parse(removeTrailingCommas(stripJsonComments(text)));
     const normalized = normalizeConfig(raw);
     configCache = normalized;
     configSourcePath = cfgPath;
