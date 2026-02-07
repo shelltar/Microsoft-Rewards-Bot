@@ -9,80 +9,13 @@ import {
     ConfigSaveFingerprint,
     ConfigScheduling,
 } from "../../interface/Config";
+import { removeTrailingCommas, stripJsonComments } from "../core/JsoncParser";
 import { Util } from "../core/Utils";
 
 const utils = new Util();
 
 let configCache: Config;
 let configSourcePath = "";
-
-// Basic JSON comment stripper (supports // line and /* block */ comments while preserving strings)
-function stripJsonComments(input: string): string {
-  let out = "";
-  let inString = false;
-  let stringChar = "";
-  let inLine = false;
-  let inBlock = false;
-  for (let i = 0; i < input.length; i++) {
-    const ch = input[i]!;
-    const next = input[i + 1];
-    if (inLine) {
-      if (ch === "\n" || ch === "\r") {
-        inLine = false;
-        out += ch;
-      }
-      continue;
-    }
-    if (inBlock) {
-      if (ch === "*" && next === "/") {
-        inBlock = false;
-        i++;
-      }
-      continue;
-    }
-    if (inString) {
-      out += ch;
-      if (ch === "\\") {
-        // escape next char
-        i++;
-        if (i < input.length) out += input[i];
-        continue;
-      }
-      if (ch === stringChar) {
-        inString = false;
-      }
-      continue;
-    }
-    if (ch === '"' || ch === "'") {
-      inString = true;
-      stringChar = ch;
-      out += ch;
-      continue;
-    }
-    if (ch === "/" && next === "/") {
-      inLine = true;
-      i++;
-      continue;
-    }
-    if (ch === "/" && next === "*") {
-      inBlock = true;
-      i++;
-      continue;
-    }
-    out += ch;
-  }
-  return out;
-}
-
-// Remove trailing commas from JSON (JSONC allows them but JSON.parse() doesn't)
-function removeTrailingCommas(input: string): string {
-  // Replace commas followed by optional whitespace and then } or ]
-  // This regex handles multiple scenarios:
-  // - ,} or ,]
-  // - , } or , ]
-  // - ,\n} or ,\n]
-  return input.replace(/,(\s*[}\]])/g, "$1");
-}
 
 // Normalize both legacy (flat) and new (nested) config schemas into the flat Config interface
 function normalizeConfig(raw: unknown): Config {
@@ -550,7 +483,7 @@ export async function loadSessionData(
       `${isMobile ? "mobile_fingerprint" : "desktop_fingerprint"}.json`,
     );
 
-    let fingerprint!: BrowserFingerprintWithHeaders;
+    let fingerprint: BrowserFingerprintWithHeaders | undefined;
     const shouldLoad =
       (saveFingerprint.desktop && !isMobile) ||
       (saveFingerprint.mobile && isMobile);
@@ -570,7 +503,7 @@ export async function loadSessionData(
       // SECURITY: Regenerate fingerprint if older than 30 days
       if (ageInDays > 30) {
         // Mark as undefined to trigger regeneration
-        fingerprint = undefined as any;
+        fingerprint = undefined;
       }
     }
 

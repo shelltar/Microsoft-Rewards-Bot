@@ -1,6 +1,6 @@
 import * as fs from "fs";
 import path from "path";
-import type { Page } from "playwright";
+import type { Page } from "rebrowser-playwright";
 
 import { DELAYS } from "../../constants";
 import { HumanTyping } from "../../util/browser/HumanTyping";
@@ -55,11 +55,12 @@ export class SearchOnBing extends Workers {
         "Completed the SearchOnBing successfully",
       );
     } catch (error) {
-      await page.close();
+      await page.close().catch(() => {});
       this.bot.log(
         this.bot.isMobile,
         "SEARCH-ON-BING",
-        "An error occurred:" + error,
+        "An error occurred: " +
+          (error instanceof Error ? error.message : String(error)),
         "error",
       );
     }
@@ -108,7 +109,8 @@ export class SearchOnBing extends Workers {
       this.bot.log(
         this.bot.isMobile,
         "SEARCH-ON-BING-QUERY",
-        "An error occurred:" + error,
+        "An error occurred: " +
+          (error instanceof Error ? error.message : String(error)),
         "error",
       );
       return title;

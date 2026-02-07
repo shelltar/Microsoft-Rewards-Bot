@@ -18,7 +18,7 @@
  */
 
 import { BrowserContext } from "rebrowser-playwright";
-import { secureRandomInt } from "./SecureRandom";
+import { secureRandom, secureRandomInt } from "./SecureRandom";
 
 /**
  * Enhanced HTTP headers that mimic real Chrome browsers
@@ -257,7 +257,7 @@ export async function applyConnectionTiming(
   // Add random delays to DNS resolution
   await context.route("**/*", async (route) => {
     // Simulate realistic DNS lookup time (0-20ms)
-    if (Math.random() < 0.1) {
+    if (secureRandom() < 0.1) {
       // 10% of requests
       await new Promise((resolve) =>
         setTimeout(resolve, secureRandomInt(0, 20)),

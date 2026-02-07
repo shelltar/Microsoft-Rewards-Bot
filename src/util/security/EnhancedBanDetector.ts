@@ -355,23 +355,3 @@ export async function comprehensiveBanCheck(
     }
   );
 }
-
-/**
- * Legacy compatibility function
- * @deprecated Use comprehensiveBanCheck instead
- */
-export function detectBanReason(error: unknown): {
-  status: boolean;
-  reason: string;
-} {
-  if (error instanceof Error) {
-    const msg = error.message;
-    for (const [key, pattern] of Object.entries(BAN_PATTERNS)) {
-      if (pattern.test(msg)) {
-        return { status: true, reason: `Detected: ${key}` };
-      }
-    }
-  }
-
-  return { status: false, reason: "" };
-}

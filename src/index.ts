@@ -3,10 +3,11 @@ import chalk from "chalk";
 import { spawn } from "child_process";
 import type { Worker } from "cluster";
 import cluster from "cluster";
+import crypto from "crypto";
 import fs from "fs";
 import path from "path";
-import type { Page } from "playwright";
 import { createInterface } from "readline";
+import type { Page } from "rebrowser-playwright";
 import { BrowserFunc } from "./browser/BrowserFunc";
 import { BrowserUtil } from "./browser/BrowserUtil";
 import { Humanizer } from "./util/browser/Humanizer";
@@ -65,9 +66,16 @@ export class MicrosoftRewardsBot {
   private accounts: Account[];
   public workers: Workers; // Made public for DesktopFlow access
 
+  /**
+   * Override accounts list (used by dashboard BotController to run a single account)
+   */
+  public setAccounts(accounts: Account[]): void {
+    this.accounts = accounts;
+  }
+
   // Summary collection (per process)
   private accountSummaries: AccountSummary[] = [];
-  private runId: string = Math.random().toString(36).slice(2);
+  private runId: string = crypto.randomBytes(6).toString("hex");
   private bannedTriggered: { email: string; reason: string } | null = null;
   private globalStandby: { active: boolean; reason?: string } = {
     active: false,

@@ -1,6 +1,6 @@
 import { AxiosRequestConfig } from "axios";
 import * as crypto from "crypto";
-import type { Page } from "playwright";
+import type { Page } from "rebrowser-playwright";
 
 import { MicrosoftRewardsBot } from "../index";
 import { OAuth } from "../interface/OAuth";
@@ -982,7 +982,7 @@ export class Login {
           this.bot.log(
             this.bot.isMobile,
             "LOGIN",
-            `Email submit click failed: ${e}`,
+            `Email submit click failed: ${e instanceof Error ? e.message : String(e)}`,
             "warn",
           ),
         );
@@ -1008,7 +1008,7 @@ export class Login {
           this.bot.log(
             this.bot.isMobile,
             "LOGIN",
-            `Switch to password failed: ${e}`,
+            `Switch to password failed: ${e instanceof Error ? e.message : String(e)}`,
             "warn",
           ),
         );
@@ -1086,7 +1086,7 @@ export class Login {
           this.bot.log(
             this.bot.isMobile,
             "LOGIN",
-            `Password submit failed: ${e}`,
+            `Password submit failed: ${e instanceof Error ? e.message : String(e)}`,
             "warn",
           ),
         );

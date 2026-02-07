@@ -1,4 +1,5 @@
 import ms from "ms";
+import { secureRandom, secureRandomShuffle } from "../security/SecureRandom";
 
 /**
  * Extract error message from unknown error type
@@ -94,10 +95,7 @@ export class Util {
    * @example utils.shuffleArray([1, 2, 3, 4]) // [3, 1, 4, 2]
    */
   shuffleArray<T>(array: T[]): T[] {
-    return array
-      .map((value) => ({ value, sort: Math.random() }))
-      .sort((a, b) => a.sort - b.sort)
-      .map(({ value }) => value);
+    return secureRandomShuffle([...array]);
   }
 
   /**
@@ -121,7 +119,7 @@ export class Util {
       );
     }
 
-    return Math.floor(Math.random() * (max - min + 1)) + min;
+    return Math.floor(secureRandom() * (max - min + 1)) + min;
   }
 
   /**
