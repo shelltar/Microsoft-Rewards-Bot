@@ -141,7 +141,7 @@ export const SELECTORS = {
 } as const;
 
 export const URLS = {
-  REWARDS_BASE: "https://lgtw.tf/Microsoft-Rewards-Bot-Legacy",
+  REWARDS_BASE: "https://rewards.bing.com",
   REWARDS_SIGNIN: "https://www.bing.com/rewards/dashboard",
   APP_USER_DATA:
     "https://prod.rewardsplatform.microsoft.com/dapi/me?channel=SAAndroid&options=613",
