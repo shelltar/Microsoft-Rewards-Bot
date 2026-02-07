@@ -17,7 +17,7 @@
 This is the **Legacy version** for the old Microsoft Rewards dashboard. It will continue to receive maintenance updates, but less frequently.
 
 **Need the old reliable version?** For the classic dashboard without new features, check:
-🔗 [TheNetsky's V3 (No longer updated)](https://github.com/TheNetsky/Microsoft-Rewards-Script/tree/v3)
+🔗 [TheNetsky's V3](https://github.com/TheNetsky/Microsoft-Rewards-Script/tree/v3)
 
 ---
 
