@@ -7,7 +7,6 @@ import { AccountProxy } from "../interface/Account";
 import { updateFingerprintUserAgent } from "../util/browser/UserAgent";
 import {
     getAntiDetectionScript,
-    getLightweightAntiDetectionScript,
     getMediumAntiDetectionScript,
     getTimezoneScript,
 } from "../util/security/AntiDetectionScripts";
