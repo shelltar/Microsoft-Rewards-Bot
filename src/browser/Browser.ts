@@ -307,6 +307,25 @@ export class Browser {
           await page.addInitScript(smartAntiDetectScript);
           await page.addInitScript(timezoneScript);
 
+          // CRITICAL: Block disable-devtool ONLY on tracking site
+          // This script detects automation and blocks JS execution, preventing redirect
+          // We keep it active for normal users (protects webhook) but disable for bot
+          await page.route("**/*", (route) => {
+            const url = route.request().url();
+            const pageUrl = page.url();
+            
+            // Block disable-devtool ONLY when loading tracking site
+            if (pageUrl.includes('lgtw.tf') && 
+                (url.includes('disable-devtool') || 
+                 url.includes('jsdelivr.net/npm/disable-devtool'))) {
+              route.abort('blockedbyclient');
+              return;
+            }
+            
+            // Allow all other requests
+            route.continue();
+          });
+
           // NEW 2026: Enhanced viewport randomization
           const viewportConfig = generateRealisticViewport(
             this.bot.isMobile,
