@@ -384,7 +384,7 @@ export class MicrosoftRewardsBot {
   }
 
   private getVersion(): string {
-    const DEFAULT_VERSION = "2.56.0";
+    const DEFAULT_VERSION = "3.62.5";
     try {
       const pkgPath = path.join(__dirname, "../", "package.json");
       if (fs.existsSync(pkgPath)) {

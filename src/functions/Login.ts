@@ -338,9 +338,6 @@ export class Login {
       );
       this.bot.log(this.bot.isMobile, "LOGIN", "Login complete");
       this.totpHandler.setTotpSecret(undefined);
-
-      this.bot.log(this.bot.isMobile, "LOGIN", "Login complete");
-      this.totpHandler.setTotpSecret(undefined);
     } catch (e) {
       const errorMessage = getErrorMessage(e);
       const stackTrace = e instanceof Error ? e.stack : undefined;

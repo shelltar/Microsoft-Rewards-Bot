@@ -322,7 +322,7 @@ export class Workers {
           activity,
           punchCard,
         );
-        await this.prepareActivityPage(activityPage, selector, throttle);
+        await this.prepareActivityPage(activityPage, throttle);
 
         const typeLabel = this.bot.activities.getTypeLabel(activity);
         if (typeLabel !== "Unsupported") {
@@ -410,7 +410,6 @@ export class Workers {
 
   private async prepareActivityPage(
     page: Page,
-    _selector: string,
     throttle: AdaptiveThrottler,
   ): Promise<void> {
     // IMPROVED: Smart wait replaces fixed 10s timeout with adaptive detection

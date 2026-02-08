@@ -1,4 +1,3 @@
-import crypto from "crypto";
 import express from "express";
 import rateLimit from "express-rate-limit";
 import fs from "fs";
@@ -6,6 +5,7 @@ import { createServer } from "http";
 import path from "path";
 import { WebSocket, WebSocketServer } from "ws";
 import { DISCORD } from "../constants";
+import { computeErrorId } from "../util/core/ErrorId";
 import { getErrorMessage } from "../util/core/Utils";
 import { logEventEmitter } from "../util/notifications/Logger";
 import { apiRouter } from "./routes";
@@ -112,41 +112,6 @@ export class DashboardServer {
     // Adds deterministic error ID and simple in-memory dedupe to avoid spam
     const dashboardErrorCache = new Map();
     const DASHBOARD_ERROR_TTL_MS = 60 * 60 * 1000; // 1 hour
-
-    function normalizeForId(text: string) {
-      if (!text) return "";
-      let t = String(text);
-      t = t.replace(/\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d+Z/g, "");
-      t = t.replace(/0x[0-9a-fA-F]+/g, "");
-      t = t.replace(/(?:[A-Za-z]:\\|\/)(?:[^\s:]*)/g, "[PATH]");
-      t = t.replace(/:\d+(?::\d+)?/g, "");
-      return t.replace(/\s+/g, " ").trim();
-    }
-
-    function computeErrorId(payload: {
-      error?: string;
-      stack?: string;
-      context?: Record<string, string>;
-      additionalContext?: Record<string, string>;
-    }) {
-      const parts: string[] = [];
-      parts.push(normalizeForId(payload.error || ""));
-      if (payload.stack) parts.push(normalizeForId(payload.stack));
-      const ctx = payload.context || {};
-      const ctxKeys = Object.keys(ctx)
-        .filter((k) => k !== "timestamp")
-        .sort();
-      for (const k of ctxKeys) parts.push(`${k}=${String(ctx[k])}`);
-      const add = payload.additionalContext || {};
-      const addKeys = Object.keys(add).sort();
-      for (const k of addKeys) parts.push(`${k}=${String(add[k])}`);
-      const canonical = parts.join("|");
-      return crypto
-        .createHash("sha256")
-        .update(canonical)
-        .digest("hex")
-        .slice(0, 12);
-    }
 
     this.app.post("/api/report-error", this.apiLimiter, async (req, res) => {
       try {

@@ -18,27 +18,7 @@
  */
 
 import { BrowserContext } from "rebrowser-playwright";
-import { secureRandom, secureRandomInt } from "./SecureRandom";
-
-/**
- * Enhanced HTTP headers that mimic real Chrome browsers
- * CRITICAL: Header order matters - CDNs fingerprint based on order
- */
-export interface EnhancedHeaders {
-  "sec-ch-ua": string;
-  "sec-ch-ua-mobile": string;
-  "sec-ch-ua-platform": string;
-  "upgrade-insecure-requests"?: string;
-  "user-agent": string;
-  accept: string;
-  "sec-fetch-site": string;
-  "sec-fetch-mode": string;
-  "sec-fetch-user"?: string;
-  "sec-fetch-dest": string;
-  "accept-encoding": string;
-  "accept-language": string;
-  referer?: string;
-}
+import { secureRandomInt } from "./SecureRandom";
 
 /**
  * Request types with different header priorities
@@ -60,7 +40,7 @@ type RequestType =
  * @param referer - Optional referer URL
  * @returns Ordered headers object
  */
-export function generateRealisticHeaders(
+function generateRealisticHeaders(
   userAgent: string,
   isMobile: boolean,
   requestType: RequestType = "document",
@@ -160,73 +140,6 @@ export function generateRealisticHeaders(
 }
 
 /**
- * Apply enhanced headers to all requests in a browser context
- *
- * @param context - Playwright browser context
- * @param userAgent - User agent string
- * @param isMobile - Mobile vs desktop
- */
-export async function applyEnhancedHeaders(
-  context: BrowserContext,
-  userAgent: string,
-  isMobile: boolean,
-): Promise<void> {
-  // Intercept all requests and add realistic headers
-  await context.route("**/*", async (route, request) => {
-    // Determine request type
-    const resourceType = request.resourceType() as RequestType;
-
-    // Get referer from request if available
-    const referer = request.headers()["referer"];
-
-    // Generate realistic headers
-    const enhancedHeaders = generateRealisticHeaders(
-      userAgent,
-      isMobile,
-      resourceType,
-      referer,
-    );
-
-    // Merge with existing headers (our headers take precedence)
-    const finalHeaders = {
-      ...request.headers(),
-      ...enhancedHeaders,
-    };
-
-    // Continue request with enhanced headers
-    await route.continue({ headers: finalHeaders });
-  });
-}
-
-/**
- * Add randomized delays between requests to mimic human browsing
- * CRITICAL: Microsoft detects rapid sequential requests
- *
- * @param context - Playwright browser context
- */
-export async function applyRequestThrottling(
-  context: BrowserContext,
-): Promise<void> {
-  let lastRequestTime = 0;
-  const minDelay = 50; // Minimum 50ms between requests
-  const maxDelay = 200; // Maximum 200ms for fast connections
-
-  await context.route("**/*", async (route) => {
-    const now = Date.now();
-    const timeSinceLastRequest = now - lastRequestTime;
-
-    // Add delay if requests are too close together
-    if (timeSinceLastRequest < minDelay) {
-      const delay = secureRandomInt(minDelay, maxDelay);
-      await new Promise((resolve) => setTimeout(resolve, delay));
-    }
-
-    lastRequestTime = Date.now();
-    await route.continue();
-  });
-}
-
-/**
  * Randomize HTTP/2 settings to prevent fingerprinting
  * Note: This requires browser launch args modification
  *
@@ -243,29 +156,6 @@ export function getRandomizedHTTP2Settings(): string[] {
     `--http2-settings-max-concurrent-streams=${maxConcurrentStreams}`,
     `--http2-settings-initial-window-size=${initialWindowSize}`,
   ];
-}
-
-/**
- * Apply connection timing randomization
- * CRITICAL: Prevents timing-based fingerprinting
- *
- * @param context - Playwright browser context
- */
-export async function applyConnectionTiming(
-  context: BrowserContext,
-): Promise<void> {
-  // Add random delays to DNS resolution
-  await context.route("**/*", async (route) => {
-    // Simulate realistic DNS lookup time (0-20ms)
-    if (secureRandom() < 0.1) {
-      // 10% of requests
-      await new Promise((resolve) =>
-        setTimeout(resolve, secureRandomInt(0, 20)),
-      );
-    }
-
-    await route.continue();
-  });
 }
 
 /**

@@ -246,47 +246,6 @@ export function normalizeRecoveryEmail(
 }
 
 /**
- * Apply a global regex replacement repeatedly until the string stops changing.
- * Ensures effective sanitization when single-pass replacement can reveal new matches.
- *
- * IMPORTANT: Provide a safe, bounded pattern. A too-broad pattern can still be expensive.
- *
- * @param input Source string
- * @param pattern Regular expression to apply (global flag enforced)
- * @param replacement Replacement string or function
- * @param maxPasses Safety cap to prevent infinite loops (default 1000)
- * @returns Final stabilized string
- */
-export function replaceUntilStable(
-  input: string,
-  pattern: RegExp,
-  replacement: string | ((substring: string, ...args: string[]) => string),
-  maxPasses: number = 1000,
-): string {
-  if (!(pattern instanceof RegExp)) {
-    throw new Error("pattern must be a RegExp");
-  }
-
-  // Ensure global flag to replace all occurrences each pass
-  const flags = pattern.flags.includes("g")
-    ? pattern.flags
-    : pattern.flags + "g";
-  const globalPattern = new RegExp(pattern.source, flags);
-
-  let previous = input;
-  for (let i = 0; i < maxPasses; i++) {
-    // Type assertion needed for union type compatibility with String.prototype.replace
-    const next = previous.replace(
-      globalPattern,
-      replacement as (substring: string, ...args: string[]) => string,
-    );
-    if (next === previous) return next;
-    previous = next;
-  }
-  return previous;
-}
-
-/**
  * Safely extract a balanced JavaScript/JSON object starting at the first '{' after an anchor.
  * Linear-time scan with brace depth counting and string handling to avoid catastrophic backtracking.
  *

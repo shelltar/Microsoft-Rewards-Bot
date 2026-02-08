@@ -187,7 +187,7 @@ export async function getEdgeVersions(
   return fetchPromise;
 }
 
-export function getSystemComponents(mobile: boolean): string {
+function getSystemComponents(mobile: boolean): string {
   if (mobile) {
     // IMPROVED: Android 10-14 coverage (was 10-14, now with sub-versions)
     const androidMajor = secureRandomInt(10, 14); // 10, 11, 12, 13, 14

@@ -238,33 +238,3 @@ export function getViewportOverrideScript(
 })();
 `;
 }
-
-/**
- * Calculate realistic zoom level
- * Some users have non-100% zoom
- *
- * @returns Zoom level (1.0 = 100%)
- */
-export function getRealisticZoomLevel(): number {
-  // Most users: 100%
-  // Some users: 110%, 125%, 90%
-  const weights = [
-    { zoom: 1.0, weight: 80 },
-    { zoom: 1.1, weight: 8 },
-    { zoom: 1.25, weight: 5 },
-    { zoom: 0.9, weight: 5 },
-    { zoom: 0.8, weight: 2 },
-  ];
-
-  const totalWeight = weights.reduce((sum, w) => sum + w.weight, 0);
-  let random = secureRandomInt(0, totalWeight);
-
-  for (const item of weights) {
-    random -= item.weight;
-    if (random <= 0) {
-      return item.zoom;
-    }
-  }
-
-  return 1.0;
-}
