@@ -76,6 +76,8 @@ export const TIMEOUTS = {
   LONG: 3000,
   VERY_LONG: 5000,
   EXTRA_LONG: 10000,
+  ACTIVITY_PAGE_LOAD: 4000, // Standard wait after activity interactions (LONG + 1s buffer)
+  SMART_WAIT_EXTENDED: 8000, // Extended smart-wait timeout for page transitions
   DASHBOARD_WAIT: 10000,
   LOGIN_MAX: parseEnvNumber(
     "LOGIN_MAX_WAIT_MS",

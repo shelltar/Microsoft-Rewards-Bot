@@ -11,12 +11,7 @@ export class ReadToEarn extends Workers {
     this.bot.log(this.bot.isMobile, "READ-TO-EARN", "Starting Read to Earn");
 
     try {
-      let geoLocale = data.userProfile.attributes.country;
-      geoLocale =
-        this.bot.config.searchSettings.useGeoLocaleQueries &&
-        geoLocale.length === 2
-          ? geoLocale.toLowerCase()
-          : "us";
+      const geoLocale = this.resolveGeoLocale(data);
 
       const userDataRequest: AxiosRequestConfig = {
         url: URLS.REWARDS_API_ME,

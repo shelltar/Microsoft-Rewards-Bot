@@ -5,6 +5,8 @@
 
 import fs from 'fs'
 import path from 'path'
+import { getErrorMessage } from '../util/core/Utils'
+import { log } from '../util/notifications/Logger'
 
 export interface DailyStats {
     date: string // ISO date (YYYY-MM-DD)
@@ -72,7 +74,7 @@ export class StatsManager {
             const filePath = path.join(this.dailyStatsPath, `${stats.date}.json`)
             fs.writeFileSync(filePath, JSON.stringify(stats, null, 2), 'utf-8')
         } catch (error) {
-            console.error('[STATS] Failed to save daily stats:', error)
+            log('main', 'STATS', `Failed to save daily stats: ${getErrorMessage(error)}`, 'error')
         }
     }
 
@@ -137,7 +139,7 @@ export class StatsManager {
             const filePath = path.join(accountDir, `${maskedEmail}_${stats.date}.json`)
             fs.writeFileSync(filePath, JSON.stringify(stats, null, 2), 'utf-8')
         } catch (error) {
-            console.error('[STATS] Failed to save account stats:', error)
+            log('main', 'STATS', `Failed to save account stats: ${getErrorMessage(error)}`, 'error')
         }
     }
 
@@ -168,7 +170,7 @@ export class StatsManager {
         try {
             fs.writeFileSync(this.globalStatsPath, JSON.stringify(stats, null, 2), 'utf-8')
         } catch (error) {
-            console.error('[STATS] Failed to save global stats:', error)
+            log('main', 'STATS', `Failed to save global stats: ${getErrorMessage(error)}`, 'error')
         }
     }
 
@@ -253,7 +255,7 @@ export class StatsManager {
                 }
             }
         } catch (error) {
-            console.error('[STATS] Failed to prune old stats:', error)
+            log('main', 'STATS', `Failed to prune old stats: ${getErrorMessage(error)}`, 'error')
         }
     }
 

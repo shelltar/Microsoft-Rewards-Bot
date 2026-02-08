@@ -1,5 +1,6 @@
 import { Page } from "rebrowser-playwright";
 
+import { TIMEOUTS } from "../../constants";
 import { getErrorMessage } from "../../util/core/Utils";
 import { Workers } from "../Workers";
 
@@ -12,7 +13,7 @@ export class UrlReward extends Workers {
     );
 
     try {
-      await this.bot.utils.wait(2000);
+      await this.bot.utils.wait(TIMEOUTS.MEDIUM_LONG);
 
       await page.close();
 

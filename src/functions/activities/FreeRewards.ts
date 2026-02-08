@@ -194,7 +194,7 @@ export class FreeRewards extends Workers {
       // Wait for reward cards to load
       await waitForElementSmart(page, '[mee-paragraph="para4"]', {
         initialTimeoutMs: 2000,
-        extendedTimeoutMs: TIMEOUTS.DASHBOARD_WAIT - 2000,
+        extendedTimeoutMs: TIMEOUTS.SMART_WAIT_EXTENDED,
         state: "attached",
         logFn: (msg) => this.bot.log(this.bot.isMobile, "FREE-REWARDS", msg),
       });
@@ -308,7 +308,7 @@ export class FreeRewards extends Workers {
       // Find and click the reward card
       const cardResult = await waitForElementSmart(page, reward.selector, {
         initialTimeoutMs: 2000,
-        extendedTimeoutMs: TIMEOUTS.DASHBOARD_WAIT - 2000,
+        extendedTimeoutMs: TIMEOUTS.SMART_WAIT_EXTENDED,
         state: "visible",
         logFn: (msg) => this.bot.log(this.bot.isMobile, "FREE-REWARDS", msg),
       });
@@ -361,7 +361,7 @@ export class FreeRewards extends Workers {
 
       const buttonResult = await waitForElementSmart(page, buttonSelector, {
         initialTimeoutMs: 2000,
-        extendedTimeoutMs: TIMEOUTS.DASHBOARD_WAIT - 2000,
+        extendedTimeoutMs: TIMEOUTS.SMART_WAIT_EXTENDED,
         state: "visible",
         logFn: (msg) => this.bot.log(this.bot.isMobile, "FREE-REWARDS", msg),
       });

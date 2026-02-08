@@ -42,6 +42,19 @@ export class Workers {
     this.bot = bot;
   }
 
+  /**
+   * Resolves the geo locale from dashboard data, falling back to "us".
+   * Uses the config's useGeoLocaleQueries setting to decide whether to use it.
+   */
+  protected resolveGeoLocale(data: DashboardData): string {
+    const country = data?.userProfile?.attributes?.country;
+    const useGeo = this.bot.config.searchSettings.useGeoLocaleQueries;
+
+    return useGeo && typeof country === "string" && country.length === 2
+      ? country.toLowerCase()
+      : "us";
+  }
+
   // Daily Set
   async doDailySet(page: Page, data: DashboardData) {
     const today = this.bot.utils.getFormattedDate();

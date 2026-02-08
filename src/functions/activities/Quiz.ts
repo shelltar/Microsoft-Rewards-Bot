@@ -69,7 +69,7 @@ export class Quiz extends Workers {
               `#rqAnswerOption${i}`,
               {
                 initialTimeoutMs: 2000,
-                extendedTimeoutMs: TIMEOUTS.DASHBOARD_WAIT - 2000,
+                extendedTimeoutMs: TIMEOUTS.SMART_WAIT_EXTENDED,
                 state: "visible",
               },
             );

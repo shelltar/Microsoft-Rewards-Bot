@@ -15,7 +15,7 @@ export class Poll extends Workers {
       // IMPROVED: Smart wait replaces fixed 10s timeout with adaptive 2s+5s detection
       const buttonResult = await waitForElementSmart(page, buttonId, {
         initialTimeoutMs: 2000,
-        extendedTimeoutMs: TIMEOUTS.DASHBOARD_WAIT - 2000,
+        extendedTimeoutMs: TIMEOUTS.SMART_WAIT_EXTENDED,
         state: "visible",
         logFn: (msg) => this.bot.log(this.bot.isMobile, "POLL", msg),
       });
@@ -34,7 +34,7 @@ export class Poll extends Workers {
       await this.bot.utils.wait(TIMEOUTS.MEDIUM_LONG);
       await page.click(buttonId);
 
-      await this.bot.utils.wait(TIMEOUTS.LONG + 1000);
+      await this.bot.utils.wait(TIMEOUTS.ACTIVITY_PAGE_LOAD);
       await page.close();
 
       this.bot.log(

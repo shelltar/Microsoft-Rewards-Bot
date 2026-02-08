@@ -1,9 +1,7 @@
+import { AxiosRequestConfig } from "axios";
 import { platform } from "os";
 import { Page } from "rebrowser-playwright";
 
-import { Workers } from "../Workers";
-
-import { AxiosRequestConfig } from "axios";
 import { URLS } from "../../constants";
 import { Counters, DashboardData } from "../../interface/DashboardData";
 import { GoogleSearch } from "../../interface/Search";
@@ -11,6 +9,7 @@ import { HumanTyping } from "../../util/browser/HumanTyping";
 import { waitForElementSmart } from "../../util/browser/SmartWait";
 import { getErrorMessage } from "../../util/core/Utils";
 import { secureRandom } from "../../util/security/SecureRandom";
+import { Workers } from "../Workers";
 
 type GoogleTrendsResponse = [
   string,

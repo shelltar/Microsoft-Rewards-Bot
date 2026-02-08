@@ -983,7 +983,7 @@ export class BrowserFunc {
       // IMPROVED: Smart wait replaces fixed 10s timeout with adaptive 2s+5s detection
       const result = await waitForElementSmart(page, SELECTORS.QUIZ_CREDITS, {
         initialTimeoutMs: 2000,
-        extendedTimeoutMs: TIMEOUTS.DASHBOARD_WAIT - 2000,
+        extendedTimeoutMs: TIMEOUTS.SMART_WAIT_EXTENDED,
         state: "visible",
         logFn: (msg) => this.bot.log(this.bot.isMobile, "QUIZ-REFRESH", msg),
       });

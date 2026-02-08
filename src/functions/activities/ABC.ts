@@ -20,7 +20,7 @@ export class ABC extends Workers {
           ".wk_OptionClickClass",
           {
             initialTimeoutMs: 2000,
-            extendedTimeoutMs: TIMEOUTS.DASHBOARD_WAIT - 2000,
+            extendedTimeoutMs: TIMEOUTS.SMART_WAIT_EXTENDED,
             state: "visible",
             logFn: (msg) => this.bot.log(this.bot.isMobile, "ABC", msg),
           },
@@ -55,12 +55,12 @@ export class ABC extends Workers {
         await this.bot.utils.wait(TIMEOUTS.MEDIUM_LONG);
         await page.click(`#${answer}`); // Click answer
 
-        await this.bot.utils.wait(TIMEOUTS.LONG + 1000);
+        await this.bot.utils.wait(TIMEOUTS.ACTIVITY_PAGE_LOAD);
 
         // IMPROVED: Smart wait for next button
         const buttonResult = await waitForElementSmart(page, "div.wk_button", {
           initialTimeoutMs: 2000,
-          extendedTimeoutMs: TIMEOUTS.DASHBOARD_WAIT - 2000,
+          extendedTimeoutMs: TIMEOUTS.SMART_WAIT_EXTENDED,
           state: "visible",
         });
 
@@ -81,7 +81,7 @@ export class ABC extends Workers {
         await this.bot.utils.wait(TIMEOUTS.MEDIUM);
       }
 
-      await this.bot.utils.wait(TIMEOUTS.LONG + 1000);
+      await this.bot.utils.wait(TIMEOUTS.ACTIVITY_PAGE_LOAD);
       await page.close();
 
       if (i === RETRY_LIMITS.ABC_MAX) {
