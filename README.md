@@ -96,7 +96,9 @@ V4 development represents hundreds of hours of work:
 
 ---
 
-## 💎 V4 Licensing Model
+## 💎 V4 Licensing Model 
+
+### (📢 I'm sorry if this might disappoint some people, but I would really appreciate it if a few users could share their thoughts on how we could approach this. Maybe the current method isn’t the best one. Feel free to discuss it on the Discord.💖)
 
 ### Why is V4 Under a Paid License?
 
