@@ -82,7 +82,7 @@ Version 4 is a **complete rewrite** of the bot to support the new Microsoft Rewa
 
 - **Expected arrival**: In a few days
 - **Official date**: Will be announced very soon
-- **Free beta version**: Available to everyone at launch (full features)
+- **Free beta version**: Available to everyone at launch (full features, limited time)
 
 ### ✨ Why V4?
 
@@ -96,54 +96,120 @@ V4 development represents hundreds of hours of work:
 
 ---
 
-## 💎 V4 Licensing Model 
+## 💎 V4 Distribution Model
 
-### (📢 I'm sorry if this might disappoint some people, but I would really appreciate it if a few users could share their thoughts on how we could approach this. Maybe the current method isn’t the best one. Feel free to discuss it on the Discord.💖)
+### Our Approach: Fair, Transparent & Community-Driven
 
-### Why is V4 Under a Paid License?
+After listening to community feedback, we've designed a model that balances project sustainability with openness and trust.
 
-Active and continuous development of V4 requires considerable time investment. To ensure the project's sustainability and provide quality support, V4 adopts a licensing model.
+### 📐 The 3-Phase Plan
+
+#### Phase 1 — Early Access (Launch → ~3 months)
+
+At launch, V4 is distributed as a **closed-source, licensed product**.
+
+- You need a licence key to use the bot
+- All features are included with the licence
+- A free beta period will be available at launch for testing
+
+**Why?** You're getting early, exclusive access to the only bot that supports the new Microsoft Rewards dashboard. The licence funds the hundreds of hours of development that went into V4.
+
+#### Phase 2 — Open Source Core (~3 months after launch)
+
+After the early access period, the **core of the bot becomes fully open-source**.
+
+- Daily Set, Desktop Search, Mobile Search — **free for everyone**
+- The source code is published on GitHub — you can read every line
+- Community contributions via pull requests are welcome
+- **No licence required** for core features
+
+**Why?** We believe in transparency. The code that handles your Microsoft credentials should be auditable by anyone. Trust is non-negotiable.
+
+#### Phase 3 — Premium Plugin (Ongoing)
+
+Advanced features are available as an **optional paid plugin** that extends the open-source core.
+
+- Multi-account support
+- Cluster parallelism
+- All promotional activities (special promos, read-to-earn, daily streak, etc.)
+- Webhook notifications (Discord, ntfy)
+- Auto-redeem goals
+
+The plugin is distributed as compiled bytecode and loaded by the core automatically.
+
+**Why?** This is how the project sustains itself long-term. The core is free, the extras are paid. Simple, fair, and sustainable.
+
+---
 
 ### 📜 License Types
 
-| Version      | Price | Duration  | Accounts  | Features             |
-| ------------ | ----- | --------- | --------- | -------------------- |
-| **Free**     | Free  | ∞         | 1 account | Limited features     |
-| **Standard** | TBA   | 1 month   | Unlimited | All features         |
-| **Annual**   | TBA   | 12 months | Unlimited | All features         |
-| **Beta**     | Free  | Temporary | Unlimited | All (testing period) |
+| Version     | Price     | Duration  | Accounts  | Features                        |
+| ----------- | --------- | --------- | --------- | ------------------------------- |
+| **Beta**    | Free      | Temporary | Unlimited | All features (testing period)   |
+| **Monthly** | ~$5/month | 1 month   | Unlimited | All features                    |
+| **Annual**  | ~$40/year | 12 months | Unlimited | All features (~33% off)         |
+| **Core**    | Free      | ∞         | 1 account | Daily set + searches (Phase 2+) |
 
-**Pricing**: Not yet announced, but deliberately **affordable and reasonable**.
+**Pricing**: Deliberately **affordable and reasonable**. The bot earns you more than it costs.
 
 ### 💰 Why It's Not a Real Cost
 
 **Main argument**: The bot generates Microsoft Rewards points convertible to money (gift cards, PayPal, etc).
 
 - One account generates approximately **$10-15/month** in rewards
-- The license pays for itself automatically through bot earnings
-- **Ultimately, net cost = $0** (or even positive with multiple accounts)
+- The licence pays for itself from day one
+- With multiple accounts, it's pure profit
+- **Net cost = $0** (or positive)
 
-### 🔒 Security and Transparency
+---
 
-V4 is proprietary with obfuscated code (anti-copy protection), but we commit to transparency:
+### 🔒 Security & Trust Commitments
 
-✅ **Partial source code published progressively**
+We heard your feedback loud and clear. Here's what we commit to:
 
-- Certain parts of the code will be made public
-- Priority to project contributors
-- Example: The login system will likely be open-source after release
+#### ✅ Your Credentials Are Safe
 
-✅ **No personal data collection**
+- **Phase 2+**: All code that handles your Microsoft login is **open-source and auditable**
+- 100% local operation — your credentials **never leave your machine**
+- No hidden telemetry, no data collection, no phone-home beyond licence validation
 
-- No hidden telemetry
-- 100% local operation
-- Your credentials never leave your machine
+#### ✅ The Code Will Be Open
 
-✅ **Complete free beta version**
+- Core features go open-source after the early access period (~3 months)
+- You will be able to read, audit, and contribute to the codebase
+- Only the premium plugin remains closed-source (and it doesn't touch your credentials)
 
-- Full testing before purchase
-- All features unlocked
-- Community feedback welcome
+#### ✅ Free Beta at Launch
+
+- Full access to all features during the beta period
+- Test everything before deciding to purchase
+- Community feedback actively shapes the product
+
+#### ✅ Machine Binding, Not Account Binding
+
+- Your licence is tied to your machine (up to 2 machines per key), not to specific Microsoft accounts
+- Run as many Microsoft accounts as you want with one licence
+- Docker support via `MACHINE_ID` environment variable
+
+---
+
+### 💬 Addressing Community Concerns
+
+> **"Paying for earning is the issue"**
+>
+> We understand. That's why the core becomes free. Phase 1 is about early access, not permanent lock-in.
+
+> **"I don't trust closed-source code with my accounts"**
+>
+> Neither would we. That's why the core goes open-source. Every line of credential-handling code will be public.
+
+> **"There will be piracy"**
+>
+> The code is protected with V8 bytecode compilation. It's not impossible to crack, but it's hard enough that most people will prefer a $5/month licence over the effort.
+
+> **"Why not just make it all free?"**
+>
+> Because Microsoft keeps changing their interface, and maintaining the bot takes real, ongoing work. Sustainable development needs sustainable funding.
 
 ---
 
@@ -172,7 +238,7 @@ npm start
 
 ## 🔗 Useful Links
 
-- 💬 **[Discord](https://discord.gg/k5uHkx9mne)** — Community support and official announcements
+- 💬 **[Discord](https://discord.gg/k5uHkx9mne)** — Community support, feedback, and official announcements
 - 📖 **[V4 Documentation](#)** — Available at release
 - 📖 **[Legacy Documentation](https://github.com/LightZirconite/Microsoft-Rewards-Bot/tree/legacy)** — Complete Legacy guide
 - 🐛 **[Report a Bug](https://github.com/LightZirconite/Microsoft-Rewards-Bot/issues)** — Help us improve the bot
@@ -182,16 +248,16 @@ npm start
 
 ## ⚖️ Disclaimer
 
-> ⚠️ **Use at your own risk.**  
-> Automation of Microsoft Rewards may lead to account suspension or bans.  
-> This software is provided **for educational purposes only**.  
+> ⚠️ **Use at your own risk.**
+> Automation of Microsoft Rewards may lead to account suspension or bans.
+> This software is provided **for educational purposes only**.
 > The authors are not responsible for any actions taken by Microsoft.
 
 ---
 
 ## 🎉 Acknowledgments
 
-A big thank you to all contributors and users who have supported this project from the beginning.
+A big thank you to all contributors and users who have supported this project from the beginning. Your feedback directly shaped this distribution model — we listened.
 
 **V4 is coming soon — Stay tuned!** 🚀
 
