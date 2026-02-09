@@ -4,209 +4,177 @@
 
 # Microsoft Rewards Bot
 
-## 🚀 V4 Available Now!
+## 🔔 Important Migration Notice
 
-**New Microsoft Rewards interface supported!** Try the latest version:
+### ⚠️ The `main` branch has been deleted
 
-👉 **[Microsoft Rewards Bot V4](https://github.com/LightZirconite/Microsoft-Rewards-Bot/tree/v4)** 👈
-
----
-
-## 📌 About This Version (Legacy)
-
-This is the **Legacy version** for the old Microsoft Rewards dashboard. It will continue to receive maintenance updates, but less frequently.
-
-**Need the old reliable version?** For the classic dashboard without new features, check:
-🔗 [TheNetsky's V3](https://github.com/TheNetsky/Microsoft-Rewards-Script/tree/v3)
+If you're reading this message, it means the project structure has completely changed. Here's what happened:
 
 ---
 
-<p align="center">
-	<img src="assets/logo.png" alt="Microsoft Rewards Bot logo" width="180" />
-</p>
+## 📋 Migration History
 
-<p align="center">
-	<a href="https://nodejs.org/"><img src="https://img.shields.io/badge/node-≥20-brightgreen?style=flat-square&logo=nodedotjs" alt="Node.js 20+" /></a>
-	<a href="https://www.typescriptlang.org/"><img src="https://img.shields.io/badge/TypeScript-strict-3178c6?style=flat-square&logo=typescript" alt="TypeScript" /></a>
-	<a href="https://discord.gg/k5uHkx9mne"><img src="https://img.shields.io/badge/Discord-Join-5865F2?style=flat-square&logo=discord&logoColor=white" alt="Discord" /></a>
-	<a href="https://github.com/LightZirconite/Microsoft-Rewards-Bot/stargazers"><img src="https://img.shields.io/github/stars/LightZirconite/Microsoft-Rewards-Bot?style=flat-square&color=gold" alt="Stars" /></a>
-</p>
+### Before (Old System)
 
-<p align="center">
-	<strong>The most advanced Microsoft Rewards automation</strong><br />
-	Real-time Dashboard · Smart Scheduling · Enterprise Anti-Detection · Multi-Account
-</p>
+- **`main` branch**: Contained the script for the old Microsoft Rewards dashboard
+- All users were based on this branch
+- Automatic updates were pulled from `main`
+
+### Phase 1: Legacy Branch Creation
+
+To prepare for the new Microsoft Rewards dashboard:
+
+1. We created the **`legacy` branch** for the old dashboard
+2. We created the **`v4` branch** for the new dashboard
+3. The `main` branch was temporarily modified to automatically redirect users to `legacy` via the auto-update system
+4. This transition allowed all users to automatically migrate to the correct branch
+
+### Phase 2: Main Branch Deletion (CURRENT)
+
+After the majority of users migrated:
+
+- **The `main` branch has been completely deleted**
+- **The `v4` branch is now the main branch of the project**
+- The `legacy` branch remains available for the old dashboard
 
 ---
 
-## ⚡ Quick Start
+## 🚀 What Should You Do?
+
+### If You Were on the `main` Branch
+
+**You must completely reinstall the bot**:
 
 ```bash
-# 1. Clone & navigate (Legacy branch)
+# 1. Backup your configuration files
+# Copy your accounts.jsonc and config.jsonc files elsewhere
+
+# 2. Completely delete the current folder
+cd ..
+rm -rf Microsoft-Rewards-Bot  # or manual deletion
+
+# 3. Clone the appropriate branch
+
+# For the old dashboard (Legacy):
 git clone -b legacy https://github.com/LightZirconite/Microsoft-Rewards-Bot.git
 cd Microsoft-Rewards-Bot
 
-# 2. One-command setup (installs deps, builds, creates config files)
-npm start
+# For the new dashboard (V4) - See next section
+git clone -b v4 https://github.com/LightZirconite/Microsoft-Rewards-Bot.git
+cd Microsoft-Rewards-Bot
 
-# 3. Configure your accounts (files auto-created on first run)
-# Edit: src/accounts.jsonc → Add your Microsoft accounts
-# Edit: src/config.jsonc → Customize bot behavior (optional)
+# 4. Restore your configuration files
+# Place your accounts.jsonc and config.jsonc back in the new folder
 
-# 4. Launch
+# 5. Launch the bot
 npm start
 ```
-
-**That's it!** No manual file renaming, no build commands. Everything is automated.
-
-## ✨ Features
-
-### Core Automation
-
-- **🎯 Complete Activity Suite**: Daily Set, More Promotions, Punch Cards, This or That, Polls, Quizzes
-- **📖 Read to Earn**: Automatic article completion
-- **✅ Daily Check-in**: Never miss your daily streak
-- **🎁 Free Rewards**: Auto-claim available offers
-- **🔍 Intelligent Searches**: Desktop (30) + Mobile (20) with diverse query sources
-
-### Enterprise-Grade Infrastructure
-
-- **📊 Real-Time Dashboard**: Monitor all accounts, points, activities, and logs via web UI
-- **⏰ Smart Scheduler**: Built-in cron with jitter, timezone detection, and vacation mode
-- **💾 Job State System**: Resume after crashes, skip completed tasks, multi-pass support
-- **🔄 Intelligent Config Merging**: Updates preserve your settings and passwords automatically
-- **🔧 Auto-Recovery**: Handles security prompts, passkeys, 2FA, and recovery emails
-
-### Anti-Detection Arsenal
-
-- **🛡️ 23-Layer Protection**: WebDriver removal, canvas noise, WebGL spoofing, audio fingerprinting
-- **🖱️ Natural Mouse**: Bézier curves, tremors, overshoot, unique personality per session
-- **⌨️ Human Typing**: Variable speed, fatigue simulation, realistic delays (Gaussian distribution)
-- **🎭 Browser Fingerprinting**: Consistent per-account, rotates on reset
-- **⏱️ Behavioral Randomness**: No fixed timing, thinking pauses, session variation
-
-### Account Management
-
-- **👥 Multi-Account**: Parallel processing with configurable clusters
-- **🛠️ Account Creator**: Automated Microsoft account registration (BETA)
-- **🔐 Security Handling**: TOTP/2FA, passkeys, recovery emails, compromised account flows
-- **🏖️ Vacation Mode**: Random off-days to mimic human patterns
-- **⚖️ Risk Management**: Adaptive throttling, ban detection, global standby
-
-### Developer Experience
-
-- **📱 Query Diversity**: Google Trends, Reddit, news feeds, semantic deduplication
-- **🔔 Notifications**: Discord webhooks, NTFY push, detailed summaries with points breakdown
-- **🐳 Docker Support**: Production-ready containers with volume persistence
-- **📝 Comprehensive Docs**: Setup, configuration, troubleshooting, API references
-- **🐛 Auto Error Reporting**: Anonymous crash reports to improve stability
-
-<p align="center">
-	<img width="1147" alt="Dashboard Preview" src="https://github.com/user-attachments/assets/e337cad6-dc8d-40eb-8b08-53da5545b209" />
-</p>
-
-## 📚 Documentation
-
-Comprehensive guides for every use case:
-
-- **[Setup Guide](docs/setup.md)** — Prerequisites and first-time installation
-- **[Configuration](docs/configuration.md)** — Customize bot behavior
-- **[Config Merging](docs/config-merging.md)** — How updates preserve your settings
-- **[Running](docs/running.md)** — Execution modes and commands
-- **[Dashboard](docs/dashboard.md)** — Web UI monitoring
-- **[Scheduling](docs/scheduling.md)** — Automatic daily runs
-- **[Notifications](docs/notifications.md)** — Discord & NTFY setup
-- **[Account Creation](docs/account-creation.md)** — Automated registration (BETA)
-- **[Docker Deployment](docs/docker.md)** — Containerized production setup
-- **[Troubleshooting](docs/troubleshooting.md)** — Common issues and fixes
-- **[Update Guide](docs/update.md)** — Keep your bot current
-
-## 🛠️ Essential Commands
-
-```bash
-# Primary
-npm start              # Full automation (installs deps, builds, runs)
-npm run dashboard      # Launch web UI (auto-setup included)
-
-# Development
-npm run dev            # TypeScript hot-reload mode
-npm run build          # Compile TypeScript only
-npm run typecheck      # Validate types without building
-
-# Account Management
-npm run creator        # Account creation wizard (BETA)
-
-# Docker
-npm run docker:compose # Launch containerized bot
-npm run docker:logs    # View container logs
-
-# Maintenance
-npm run update         # Update from GitHub (auto-merge configs)
-npm run lint           # Check code style
-npm run lint:fix       # Auto-fix linting issues
-```
-
-## ⚠️ Account Creation Warning
-
-**New accounts flagged if used immediately.** Microsoft detects fresh accounts that earn points on day 1.
-
-**Best practice:** Let new accounts age **2-4 weeks** before automation. Use them manually for browsing/searches during this period.
 
 ---
 
-## � Version Comparison
+## 🆕 Microsoft Rewards Bot V4
 
-| Version           | Dashboard Support | Update Frequency      | Status          | Link                                                                      |
-| ----------------- | ----------------- | --------------------- | --------------- | ------------------------------------------------------------------------- |
-| **V4** (Main)     | ✅ New Interface  | 🔥 Active Development | **Recommended** | [Try V4](https://github.com/LightZirconite/Microsoft-Rewards-Bot/tree/v4) |
-| **Legacy** (This) | ✅ Old Interface  | ⚠️ Maintenance Only   | Stable          | Current branch                                                            |
-| **TheNetsky V3**  | ✅ Old Interface  | ✅    Updates         | Stable         | [View](https://github.com/TheNetsky/Microsoft-Rewards-Script/tree/v3)     |
+### 🎯 New Era: Support for the New Microsoft Rewards Dashboard
 
-**When to use Legacy:**
+Version 4 is a **complete rewrite** of the bot to support the new Microsoft Rewards interface.
 
-- Your region still has the old Microsoft Rewards dashboard
-- You want maximum stability with proven code
-- You don't need the latest features
+### 📅 Release Date
 
-**When to upgrade to V4:**
+- **Expected arrival**: In a few days
+- **Official date**: Will be announced very soon
+- **Free beta version**: Available to everyone at launch (full features)
 
-- Your region has the new Microsoft Rewards interface
-- You want the latest features and active development
-- You're starting a new installation
+### ✨ Why V4?
+
+V4 development represents hundreds of hours of work:
+
+- Complete code rewrite from scratch
+- Support for the new Microsoft Rewards dashboard
+- Modern and optimized architecture
+- Active development and regular updates
+- Dedicated technical support
 
 ---
 
-## 🔥 Features Exclusive to LightZirconite Versions
+## 💎 V4 Licensing Model
 
-Compared to the original TheNetsky fork, both Legacy and V3 include:
+### Why is V4 Under a Paid License?
 
-## 🔥 Features Exclusive to LightZirconite Versions
+Active and continuous development of V4 requires considerable time investment. To ensure the project's sustainability and provide quality support, V4 adopts a licensing model.
 
-Compared to the original TheNetsky fork, both Legacy and V3 include:
+### 📜 License Types
 
-| Feature                   | LightZirconite (Legacy/V3)  | TheNetsky Original |
-| ------------------------- | :-------------------------: | :----------------: |
-| **Real-Time Dashboard**   |    ✅ WebSocket-based UI    |         ✅ Cron   |
-| **Built-in Scheduler**    |    ✅ Cron + jitter + TZ    |  ⚠️ External only  |
-| **Job State System**      |  ✅ Resume + skip + passes  |         ❌         |
-| **Config Auto-Merge**     | ✅ Preserves customizations |         ❌         |
-| **Account Creator**       |     ✅ Automated (BETA)     |         ❌         |
-| **Vacation Mode**         |     ✅ Random off-days      |         ❌         |
-| **Risk Management**       |   ✅ Adaptive throttling    |         ❌         |
-| **Compromised Recovery**  |   ✅ Security prompt auto   |         ❌         |
-| **Error Reporting**       |  ✅ Anonymous auto-reports  |         ❌         |
-| **Query Diversity**       | Google Trends, Reddit, News |   Google Trends/Local |
-| **Anti-Detection Layers** |      23 active layers       |     ~15 layers     |
-| **Comprehensive Docs**    |     ✅ 10+ guide pages      |     ⚠️ Limited     |
-| **One-Command Setup**     |       ✅ `npm start`        |  ⚠️ Manual steps   |
+| Version      | Price | Duration  | Accounts  | Features             |
+| ------------ | ----- | --------- | --------- | -------------------- |
+| **Free**     | Free  | ∞         | 1 account | Limited features     |
+| **Standard** | TBA   | 1 month   | Unlimited | All features         |
+| **Annual**   | TBA   | 12 months | Unlimited | All features         |
+| **Beta**     | Free  | Temporary | Unlimited | All (testing period) |
 
-### Migration from TheNetsky
+**Pricing**: Not yet announced, but deliberately **affordable and reasonable**.
+
+### 💰 Why It's Not a Real Cost
+
+**Main argument**: The bot generates Microsoft Rewards points convertible to money (gift cards, PayPal, etc).
+
+- One account generates approximately **$10-15/month** in rewards
+- The license pays for itself automatically through bot earnings
+- **Ultimately, net cost = $0** (or even positive with multiple accounts)
+
+### 🔒 Security and Transparency
+
+V4 is proprietary with obfuscated code (anti-copy protection), but we commit to transparency:
+
+✅ **Partial source code published progressively**
+
+- Certain parts of the code will be made public
+- Priority to project contributors
+- Example: The login system will likely be open-source after release
+
+✅ **No personal data collection**
+
+- No hidden telemetry
+- 100% local operation
+- Your credentials never leave your machine
+
+✅ **Complete free beta version**
+
+- Full testing before purchase
+- All features unlocked
+- Community feedback welcome
+
+---
+
+## 🌿 Legacy Branch (Old Dashboard)
+
+If your region still uses the old Microsoft Rewards dashboard:
+
+**Clone Legacy**:
 
 ```bash
-# Compatible account format - just copy your accounts file
-cp your-old-accounts.jsonc src/accounts.jsonc
+git clone -b legacy https://github.com/LightZirconite/Microsoft-Rewards-Bot.git
+cd Microsoft-Rewards-Bot
 npm start
 ```
+
+**Features**:
+
+- ✅ Old dashboard support
+- ✅ 100% free and open-source
+- ✅ Maintenance updates
+- ⚠️ Fewer evolutions than V4
+
+📖 **Complete documentation**: [See Legacy branch](https://github.com/LightZirconite/Microsoft-Rewards-Bot/tree/legacy)
+
+---
+
+## 🔗 Useful Links
+
+- 💬 **[Discord](https://discord.gg/k5uHkx9mne)** — Community support and official announcements
+- 📖 **[V4 Documentation](#)** — Available at release
+- 📖 **[Legacy Documentation](https://github.com/LightZirconite/Microsoft-Rewards-Bot/tree/legacy)** — Complete Legacy guide
+- 🐛 **[Report a Bug](https://github.com/LightZirconite/Microsoft-Rewards-Bot/issues)** — Help us improve the bot
+- 🔄 **[Backup Repository](https://git.justw.tf/LightZirconite/Microsoft-Rewards-Bot)** — Backup mirror
 
 ---
 
@@ -219,20 +187,13 @@ npm start
 
 ---
 
-## 📦 Backup Repository
+## 🎉 Acknowledgments
 
-In case the main repository is unavailable:  
-🔗 **[git.justw.tf/LightZirconite/Microsoft-Rewards-Bot](https://git.justw.tf/LightZirconite/Microsoft-Rewards-Bot)** (Legacy branch)
+A big thank you to all contributors and users who have supported this project from the beginning.
 
-For V4: [Main branch backup](https://git.justw.tf/LightZirconite/Microsoft-Rewards-Bot/src/branch/main)
+**V4 is coming soon — Stay tuned!** 🚀
 
 ---
-
-<p align="center">
-	<a href="https://discord.gg/k5uHkx9mne"><strong>💬 Discord</strong></a> · 
-	<a href="docs/index.md"><strong>📖 Documentation</strong></a> · 
-	<a href="https://github.com/LightZirconite/Microsoft-Rewards-Bot/issues"><strong>🐛 Report Bug</strong></a>
-</p>
 
 <p align="center">
 	Made with ❤️ by <a href="https://github.com/LightZirconite">LightZirconite</a> and <a href="https://github.com/LightZirconite/Microsoft-Rewards-Bot/graphs/contributors">contributors</a>
